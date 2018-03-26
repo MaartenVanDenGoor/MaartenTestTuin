@@ -3,7 +3,9 @@ package test;
 public class PriemApp {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		for (int i=1;i<30;i++) {
+		int beginGetal = Integer.parseInt(args[0]);
+		int eindGetal = Integer.parseInt(args[1]);
+		for (int i=beginGetal;i<=eindGetal;i++) {
 			System.out.println(i+(isPriem(i)?" is een Priemgetal":" is GEEN Priemgetal"));
 		}
 		

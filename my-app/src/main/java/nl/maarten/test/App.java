@@ -1,4 +1,4 @@
-package $nl.maarten.test;
+package nl.maarten.test;
 
 /**
  * Hello world!
