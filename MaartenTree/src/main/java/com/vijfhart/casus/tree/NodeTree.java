@@ -6,11 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
-	private List<Node> nodeList = new ArrayList<>();
+	private List<E> nodeList = new ArrayList<>();
 	@Override
 	public TreeIterator<E> iterator() {
 		return new TreeIterator<E>(){
-			Iterator<Node> iterator;
+			Iterator<E> iterator;
+			E           current;
+			
 
 			@Override
 			public boolean hasNext() {
@@ -21,13 +23,24 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 			@Override
 			public E next() {
 				// TODO Auto-generated method stub
-				return (E) iterator.next();
+				current = iterator.next();
+				return current;
 			}
 
 			@Override
 			public int level() {
 				// TODO Auto-generated method stub
-				return 0;
+				if (current.getParent()==null) {
+					return 0;
+				} else {
+					E node = current.getParent();
+					int teller = 0;
+					while (node != null) {
+						teller++;
+					    node = node.getParent();
+					}
+					return teller;
+				}
 			}
 
 			@Override

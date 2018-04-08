@@ -8,7 +8,7 @@ import java.util.List;
  * Hello world!
  *
  */
-public class TreeApp 
+public class TreeApp1 
 {
     public static void main( String[] args )
     {
@@ -26,7 +26,7 @@ public class TreeApp
     	NameNode appel     = new NameNode("Appel",klaassen);
     	NameNode heuvel    = new NameNode("Heuvel",kraay);
     	NameNode manders   = new NameNode("Manders",heuvel);
-    	Tree<NameNode> lijst = new NodeTree<>();
+    	List<NameNode> lijst = new ArrayList<>();
     	lijst.add(kraay);
     	lijst.add(pieters);
     	lijst.add(sanders);
@@ -41,13 +41,11 @@ public class TreeApp
     	lijst.add(appel);
     	lijst.add(heuvel);
     	lijst.add(manders);
-        TreeIterator<NameNode> iterator = lijst.iterator();
-        while (iterator.hasNext()){
-          System.out.println(iterator.next()+" "+iterator.level());
-        }
+    	// Ongesorteerd
+    	System.out.println(lijst);
     	// Gesorteerd
-    	//Collections.sort(lijst,(n1,n2) -> n1.compareLevelTo(n2));
-    	//System.out.println(lijst);
+    	Collections.sort(lijst,(n1,n2) -> n1.compareLevelTo(n2));
+    	System.out.println(lijst);
 
     }
 }

@@ -24,7 +24,7 @@ public class NameNode implements Node<NameNode> {
 	public String toString() {
 	//	if (parent==null) return name;
 	//	return parent.toString()+"/"+name;
-		return name + " :"+getLevel();
+		return name; // + " :"+getLevel();
 	}
     public int getLevel() {
         if (parent==null) return 1;
