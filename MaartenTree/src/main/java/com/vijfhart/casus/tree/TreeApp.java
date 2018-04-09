@@ -26,28 +26,28 @@ public class TreeApp
     	NameNode appel     = new NameNode("Appel",klaassen);
     	NameNode heuvel    = new NameNode("Heuvel",kraay);
     	NameNode manders   = new NameNode("Manders",heuvel);
-    	Tree<NameNode> lijst = new NodeTree<>();
+    	Tree<AbstractNode> lijst = new NodeTree<>();
     	lijst.add(kraay);
     	lijst.add(pieters);
+    	lijst.add(klaassen);
+    	lijst.add(heuvel);
     	lijst.add(sanders);
     	lijst.add(adelaar);
     	lijst.add(vermeulen);
     	lijst.add(smits);
-    	lijst.add(klaassen);
     	lijst.add(alkema);
     	lijst.add(walstra);
     	lijst.add(vergeer);
     	lijst.add(dost);
     	lijst.add(appel);
-    	lijst.add(heuvel);
+
     	lijst.add(manders);
-        TreeIterator<NameNode> iterator = lijst.iterator();
+        TreeIterator<AbstractNode> iterator = lijst.iterator();
         while (iterator.hasNext()){
           System.out.println(iterator.next()+" "+iterator.level());
         }
     	// Gesorteerd
     	//Collections.sort(lijst,(n1,n2) -> n1.compareLevelTo(n2));
     	//System.out.println(lijst);
-
     }
 }
