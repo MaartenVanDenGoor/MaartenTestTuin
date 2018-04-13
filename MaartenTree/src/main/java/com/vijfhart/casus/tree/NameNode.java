@@ -1,6 +1,6 @@
 package com.vijfhart.casus.tree;
 
-public class NameNode extends AbstractNode  {
+public class NameNode extends AbstractNode<NameNode>  {
 	private String   name;
     //
 	NameNode(String name, NameNode parent){

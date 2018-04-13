@@ -10,6 +10,11 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
+    NameNode a     = new NameNode("A");
+    NameNode c     = new NameNode("C",a);
+    NameNode b     = new NameNode("B",a);
+    NameNode b1     = new NameNode("B1",b);
+    NameNode b2     = new NameNode("B2",b);
     /**
      * Create the test case
      *
@@ -35,4 +40,19 @@ public class AppTest
     {
         assertTrue( true );
     }
+    public void testLevelA(){
+    	assertTrue( a.compareTo(b)==-1 );
+    }
+    public void testLevelB(){
+    	assertTrue( b.compareTo(c)==-1 );
+    }
+    public void testLevelC(){
+    	assertTrue( b1.compareTo(c)==-1 );
+    }  
+    public void testLevelD(){
+    	assertTrue( b1.compareTo(c)==-1 );
+    }
+    public void testLevelE(){
+    	assertTrue( c.compareTo(b2)==-1 );
+    }  
 }

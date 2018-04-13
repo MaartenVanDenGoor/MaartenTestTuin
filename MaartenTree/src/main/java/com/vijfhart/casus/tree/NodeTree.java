@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 	private List<E> nodeList = new ArrayList<>();
@@ -57,6 +58,7 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 				if (start == null) {
 					if (current.isLeaf()) {
 				       iterator.remove();
+				       current=null;
 					} else {
 						throw new RuntimeException("Node is geen leaf en mag dus niet verwijderd worden");
 					}
@@ -95,6 +97,22 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 				// TODO Auto-generated method stub
 				return false;
 			}
+			@Override
+		    public String path(String separator) {
+				return path(separator,E -> E.toString() );
+			}
+			@Override
+		    public String path(String separator, Function<E, String> f) {
+				StringBuilder sb = new StringBuilder();
+				sb.append(f.apply(current));
+				E parent = current.getParent();
+				for (int i = 0 ; i < level();i++) {
+					sb.insert(0,separator);
+					sb.insert(0,f.apply(parent));
+					parent = parent.getParent();
+				}
+				return sb.toString();
+			};
 		 };
 	}
 

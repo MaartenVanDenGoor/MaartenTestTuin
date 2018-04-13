@@ -1,6 +1,7 @@
 package com.vijfhart.casus.tree;
 
 import java.util.Iterator;
+import java.util.function.Function;
 
 public interface TreeIterator<E extends Node<E>>  extends Iterator<E> {
     /**
@@ -18,5 +19,12 @@ public interface TreeIterator<E extends Node<E>>  extends Iterator<E> {
      * @return True als huidige node geen parent, false als node wel parent is
      */
     boolean isLeaf();
-
+    /**
+     * Ophalen van pad (opeenvolgende -voor-ouders) gescheiden door seperator
+     * @param separator
+     * @return String met daarin het pad (opeenvolgende -voor-ouders) gescheiden door seperator
+     */
+     String path(String separator); 
+     
+     String path(String separator, Function<E, String> f); 
 }
