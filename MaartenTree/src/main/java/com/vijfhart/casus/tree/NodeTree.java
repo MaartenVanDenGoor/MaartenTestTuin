@@ -1,14 +1,23 @@
 package com.vijfhart.casus.tree;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToLongFunction;
 
 public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 	private List<E> nodeList = new ArrayList<>();
 	
+    NodeTree(){
+    }
+	NodeTree(Collection<E> nodes) {
+		nodeList.addAll(nodes);
+	}
 	@Override
 	public TreeIterator<E> iterator() {
 		return new TreeIterator<E>(){
@@ -94,8 +103,7 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 			}
 			@Override
 			public boolean isLeaf() {
-				// TODO Auto-generated method stub
-				return false;
+				return descendantCount(current)==0?true:false;
 			}
 			@Override
 		    public String path(String separator) {
@@ -112,6 +120,16 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 					parent = parent.getParent();
 				}
 				return sb.toString();
+			}
+			@Override
+			public void orderSiblingsBy(Comparator<E> comparator) {
+				if (current!=null) {
+					throw new RuntimeException("Methode kan niet worden aangeroepen na aanroep next()");
+				}
+				TreeComparator<E> treeComparator = new TreeComparator<>(comparator);
+				Collections.sort(nodeList,treeComparator);
+				iterator = nodeList.iterator();
+				
 			};
 		 };
 	}
@@ -121,4 +139,46 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 		nodeList.add(node);
 		
 	}
+	@Override
+	public List<E> descendantsOf(E node) {
+		List<E> retList = new ArrayList<>();
+		NodeTree<E> copyTree = new NodeTree<>(nodeList);
+		//
+		TreeIterator<E> treeIt = copyTree.iterator();
+		treeIt.startWith(node);
+	     while (treeIt.hasNext()){
+			retList.add(treeIt.next());
+		}
+	    return retList;
+	}
+	@Override
+	public int descendantCount(E node) {
+		if (node==null) {
+			throw new RuntimeException("Node meegeven !");
+		}
+		return  descendantsOf(node).size()-1; 
+	}
+	@Override
+	public long DescendantSum(E node, ToLongFunction<E> func) {
+		List<E> retList = descendantsOf(node);
+		long retWaarde = 0;
+		for (E elem:retList) {
+			if (!elem.equals(node)) {
+			    retWaarde += func.applyAsLong(node);
+			}
+		}
+		return retWaarde;
+	}
+	@Override
+	public double DescendantSum(E node, ToDoubleFunction<E> func) {
+		List<E> retList = descendantsOf(node);
+		double retWaarde = 0;
+		for (E elem:retList) {
+			if (!elem.equals(node)) {
+			   retWaarde += func.applyAsDouble(node);
+			}
+		}
+		return retWaarde;
+	}
+	
 }

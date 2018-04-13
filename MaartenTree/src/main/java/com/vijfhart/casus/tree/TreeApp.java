@@ -1,8 +1,10 @@
-package com.vijfhart.casus.tree;
+																																																																																						package com.vijfhart.casus.tree;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.ToLongFunction;
+import java.util.function.ToDoubleFunction;
 
 /**
  * Hello world!
@@ -19,22 +21,22 @@ public class TreeApp
     	NameNode adelaar   = new NameNode("Adelaar",sanders);
     	NameNode vermeulen = new NameNode("Vermeulen",pieters);
     	NameNode smits     = new NameNode("Smits",vermeulen);
-    	NameNode klaassen  = new NameNode("Klaassen",kraay);
-    	NameNode alkema    = new NameNode("Alkema",klaassen);
-    	NameNode walstra   = new NameNode("Walstra",klaassen);
-    	NameNode vergeer   = new NameNode("Vergeer",klaassen);
-    	NameNode dost      = new NameNode("Dost",klaassen);
-    	NameNode appel     = new NameNode("Appel",klaassen);
+    	NameNode brandsma  = new NameNode("Brandsma",kraay);
+    	NameNode alkema    = new NameNode("Alkema",brandsma);
+    	NameNode walstra   = new NameNode("Walstra",brandsma);
+    	NameNode vergeer   = new NameNode("Vergeer",brandsma);
+    	NameNode dost      = new NameNode("Dost",brandsma);
+    	NameNode appel     = new NameNode("Appel",brandsma);
     	NameNode heuvel    = new NameNode("Heuvel",kraay);
     	NameNode manders   = new NameNode("Manders",heuvel);
-    	/*
+    	
     	Tree<NameNode> lijst = new NodeTree<>();
     	lijst.add(kraay);
     	lijst.add(pieters);
-    	lijst.add(klaassen);
+    	lijst.add(brandsma);
     	lijst.add(heuvel);
     	lijst.add(sanders);
-    	lijst.add(adelaar);
+       	lijst.add(adelaar);
     	lijst.add(vermeulen);
     	lijst.add(smits);
     	lijst.add(alkema);
@@ -42,19 +44,35 @@ public class TreeApp
     	lijst.add(vergeer);
     	lijst.add(dost);
     	lijst.add(appel); 
-
     	lijst.add(manders);
-        TreeIterator<NameNode> iterator = lijst.iterator();
+        
+    	TreeIterator<NameNode> iterator = lijst.iterator();
+   	
+    	System.out.println("Siblings op alfabetische volgorde");
+    	System.out.println(String.format("%1$-30s", "Naam"  )
+      		  + String.format("%1$-5s","Kids")
+      		  +" "+String.format("%1$-60s","Pad")
+      		  + "Totaal aantal letters kids"
+      		  );
+    	iterator.orderSiblingsBy((o1,o2) -> o1.toString().compareTo(o2.toString()));
         while (iterator.hasNext()){
-          System.out.println(String.format("%1$-30s",   iterator.next())+" "+iterator.path("/"));
+        NameNode elem = iterator.next();
+          System.out.println(String.format("%1$-30s", elem  )
+        		  + String.format("%1$-5s",lijst.descendantCount(elem))
+        		  +" "+String.format("%1$-60s",iterator.path("/"))
+        		  + lijst.DescendantSum(elem,(ToLongFunction<NameNode>) node -> node.getName().length())
+        		  );
         }
-        ///////
+
+        System.out.println();
+        System.out.println("Siblings op volgorde lengte naam");        
         iterator = lijst.iterator();
+        iterator.orderSiblingsBy((o1,o2) -> Integer.compare(o1.getName().length(),o2.getName().length()));
         while (iterator.hasNext()){
-        	iterator.next();
-            System.out.println(iterator.path("/", E ->E.toString().toUpperCase() ));
-          }      
-        /*/
+            System.out.println(String.format("%1$-30s",   iterator.next())+" "+iterator.path("/"));
+          }
+        
+        /*
         NameNode a     = new NameNode("A");
         NameNode c     = new NameNode("C",a);
         NameNode b     = new NameNode("B",a);
@@ -77,8 +95,10 @@ public class TreeApp
         lijstA.add(c12);
         lijstA.add(c11); 
         TreeIterator<NameNode> iteratorA = lijstA.iterator();
+        iteratorA.orderSiblingsBy(null);
         while (iteratorA.hasNext()){
           System.out.println(iteratorA.next()+" "+iteratorA.level());
         }       
+        */
     }
 }

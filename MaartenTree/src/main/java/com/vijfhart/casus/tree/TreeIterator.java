@@ -1,5 +1,6 @@
 package com.vijfhart.casus.tree;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Function;
 
@@ -27,4 +28,9 @@ public interface TreeIterator<E extends Node<E>>  extends Iterator<E> {
      String path(String separator); 
      
      String path(String separator, Function<E, String> f); 
+     /**
+      * Bepaal door de mee te geven comparator de volgorde van zuster elementen
+      * @param comparato
+      */
+     void orderSiblingsBy(Comparator<E> comparator);
 }

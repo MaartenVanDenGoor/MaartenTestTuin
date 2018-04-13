@@ -25,7 +25,6 @@ public abstract class AbstractNode< E extends AbstractNode<E>> implements Node<E
 		}
 		
 		int levelCompare = compareLevelTo(other);
-		System.out.println(this+" <-> "+other+" : "+levelCompare);
 		// Gelijk level
 		if (levelCompare==0) {
 			return this.getParent().compareTo(other.getParent());
@@ -35,7 +34,7 @@ public abstract class AbstractNode< E extends AbstractNode<E>> implements Node<E
 			return this.getParent().compareTo(other);
 		}
 		// o heeft lager level
-		return -this.compareTo(other.getParent());
+		return this.compareTo(other.getParent());
 	}
 	@Override
 	public int compareLevelTo(E other) {
