@@ -26,7 +26,12 @@ public interface TreeIterator<E extends Node<E>>  extends Iterator<E> {
      * @return String met daarin het pad (opeenvolgende -voor-ouders) gescheiden door seperator
      */
      String path(String separator); 
-     
+     /**
+      * Ophalen van pad (opeenvolgende -voor-ouders) gescheiden door seperator
+      * @param separator
+      * @param f Mee te geven lambda expressie
+      * @return String met daarin het pad (opeenvolgende -voor-ouders) gescheiden door seperator
+      */
      String path(String separator, Function<E, String> f); 
      /**
       * Bepaal door de mee te geven comparator de volgorde van zuster elementen

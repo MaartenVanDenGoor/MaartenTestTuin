@@ -53,6 +53,6 @@ public class AppTest
     	assertTrue( b1.compareTo(c)==-1 );
     }
     public void testLevelE(){
-    	assertTrue( c.compareTo(b2)==-1 );
+    	assertTrue( c.compareTo(b2)==1 );
     }  
 }

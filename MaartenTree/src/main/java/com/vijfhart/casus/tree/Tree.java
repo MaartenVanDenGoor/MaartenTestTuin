@@ -26,14 +26,49 @@ public interface Tree<E extends Node<E>> extends TreeIterable<E> {
      * Bepaal met op te geven lambda expressie welke waardes opgeteld moeten
      *  van alle nodes onder mee te geven node
      * @param node
-     * @return long
+     * @return Som (long) 
      */
 	long DescendantSum(E node, ToLongFunction<E> func);
 	/**
      * Bepaal met op te geven lambda expressie welke waardes opgeteld moeten
      *  van alle nodes onder mee te geven node
 	 * @param node
-	 * @return double
+	 * @return Som (double)
 	 */
 	 double DescendantSum(E node, ToDoubleFunction<E> func);
+	 /**
+     * Bepaal met op te geven lambda expressie van welke waardes het gemiddelde
+     *  van alle nodes onder mee te geven node wordt bepaald
+	 * @param node
+	 * @return double Som
+	 */
+	 double descendantAvg(E node, ToDoubleFunction<E> func);
+	 /**
+     * Bepaal met op te geven lambda expressie van welke waardes het minimum
+     *  van alle nodes onder mee te geven node wordt bepaald
+	 * @param node
+	 * @return Minimale waarde (long)
+	 */
+	 long descendantMin(E node, ToLongFunction<E> func);
+	 /**
+     * Bepaal met op te geven lambda expressie van welke waardes het minimum
+     *  van alle nodes onder mee te geven node wordt bepaald
+	 * @param node
+	 * @return Minimale waarde (double)
+	 */
+	 double descendantMin(E node, ToDoubleFunction<E> func);
+	 /**
+     * Bepaal met op te geven lambda expressie van welke waardes het maximum
+     *  van alle nodes onder mee te geven node wordt bepaald
+	 * @param node
+	 * @return Maximale waarde (long)
+	 */
+	 long descendantMax(E node, ToLongFunction<E> func);
+	 /**
+     * Bepaal met op te geven lambda expressie van welke waardes het maximum
+     *  van alle nodes onder mee te geven node wordt bepaald
+	 * @param node
+	 * @return Maximale waarde (double)
+	 */
+	 double descendantMax(E node, ToDoubleFunction<E> func);	 
 }

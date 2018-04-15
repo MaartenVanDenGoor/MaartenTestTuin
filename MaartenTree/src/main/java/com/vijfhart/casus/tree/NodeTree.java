@@ -164,7 +164,7 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 		long retWaarde = 0;
 		for (E elem:retList) {
 			if (!elem.equals(node)) {
-			    retWaarde += func.applyAsLong(node);
+			    retWaarde += func.applyAsLong(elem);
 			}
 		}
 		return retWaarde;
@@ -175,7 +175,68 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 		double retWaarde = 0;
 		for (E elem:retList) {
 			if (!elem.equals(node)) {
-			   retWaarde += func.applyAsDouble(node);
+			   retWaarde += func.applyAsDouble(elem);
+			}
+		}
+		return retWaarde;
+	}
+	@Override
+	public double descendantAvg(E node, ToDoubleFunction<E> func) {
+		List<E> retList = descendantsOf(node);
+		double totaal = 0;
+		double aantal = 0;
+		for (E elem:retList) {
+			if (!elem.equals(node)) {
+				totaal += func.applyAsDouble(elem);
+				aantal++;
+			}
+		}
+		return aantal==0? 0 : totaal/aantal;
+	}
+	@Override
+	public long descendantMin(E node, ToLongFunction<E> func) {
+		List<E> retList = descendantsOf(node);
+		long retWaarde = Long.MAX_VALUE;
+		for (E elem:retList) {
+			if (!elem.equals(node)) {
+				long nodeValue = func.applyAsLong(elem);
+				retWaarde = retWaarde > nodeValue ? nodeValue : retWaarde;
+			}
+		}
+		return retWaarde;
+	}
+	@Override
+	public double descendantMin(E node, ToDoubleFunction<E> func) {
+		List<E> retList = descendantsOf(node);
+		double retWaarde = Double.MAX_VALUE;
+		for (E elem:retList) {
+			if (!elem.equals(node)) {
+				double nodeValue = func.applyAsDouble(elem);
+				retWaarde = retWaarde > nodeValue ? nodeValue : retWaarde;
+			}
+		}
+		return retWaarde;
+	}
+	@Override
+	public long descendantMax(E node, ToLongFunction<E> func) {
+		List<E> retList = descendantsOf(node);
+		long retWaarde = Long.MIN_VALUE;
+		for (E elem:retList) {
+			if (!elem.equals(node)) {
+				long nodeValue = func.applyAsLong(elem);
+				retWaarde = retWaarde < nodeValue ? nodeValue : retWaarde;
+			}
+		}
+		return retWaarde;
+	}
+	@Override
+	public double descendantMax(E node, ToDoubleFunction<E> func) {
+		List<E> retList = descendantsOf(node);
+		double retWaarde = Double.MAX_VALUE;
+		for (E elem:retList) {
+			if (!elem.equals(node)) {
+				double nodeValue = func.applyAsDouble(elem);
+				retWaarde = retWaarde < nodeValue ? nodeValue : retWaarde;
 			}
 		}
 		return retWaarde;

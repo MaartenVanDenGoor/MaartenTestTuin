@@ -45,7 +45,6 @@ public class TreeApp
     	lijst.add(dost);
     	lijst.add(appel); 
     	lijst.add(manders);
-        
     	TreeIterator<NameNode> iterator = lijst.iterator();
    	
     	System.out.println("Siblings op alfabetische volgorde");
@@ -71,7 +70,13 @@ public class TreeApp
         while (iterator.hasNext()){
             System.out.println(String.format("%1$-30s",   iterator.next())+" "+iterator.path("/"));
           }
-        
+        System.out.println();
+        System.out.println(" Gemiddelde lengte namen nakomelingen "+brandsma+" "
+        		+ lijst.descendantAvg(brandsma, node -> node.getName().length()));
+        System.out.println(" Max lengte namen nakomelingen "+brandsma+" "
+        		+ lijst.descendantMax(brandsma, (ToLongFunction<NameNode>) node -> node.getName().length()));
+        System.out.println(" Min lengte namen nakomelingen "+brandsma+" "
+        		+ lijst.descendantMin(brandsma, (ToDoubleFunction<NameNode>) node -> node.getName().length()));
         /*
         NameNode a     = new NameNode("A");
         NameNode c     = new NameNode("C",a);
