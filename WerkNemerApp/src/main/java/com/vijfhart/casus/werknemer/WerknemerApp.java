@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.ToDoubleFunction;
 import java.util.function.ToLongFunction;
 
 import com.vijfhart.casus.tree.AbstractNode;
@@ -46,35 +47,31 @@ public class WerknemerApp
     		WerknemerNode wn = new WerknemerNode(w);
     		lijst.add(wn);
     	}
-    	// 
-    	for (WerknemerNode node:lijst) {
-    		if (node.getWerknemer().getManager()!=0) {
-    			int manager = node.getWerknemer().getManager();
+       	for (WerknemerNode elem:lijst) {
+    		int manager = elem.getWerknemer().getManager();
+    		if (manager!=0) {
     			// Zoek parent node
     			WerknemerNode mm = lijst.stream().filter(p -> p.getWerknemer().getNummer()==manager)
     					.findFirst().get();
-    			node.setParent(mm);
+    			elem.setParent(mm);
     		}
     		
     	}
-  //  	Ik dacht dat ik hier de tree zou kunnen maken door gelijk de list in de construcor mee te geven
-  //     maar dan krijg ik een melding van de compiler Can not infer type arguments
-   	
-    	Tree<WerknemerNode> tree = new NodeTree<>();
-    	for (WerknemerNode node:lijst) {
-           tree.add(node);    		
-    	}
+   	    
+    	Tree<WerknemerNode> tree = new NodeTree<WerknemerNode>(lijst);
+
     	//
     	TreeIterator<WerknemerNode> iterator = tree.iterator();
-       	
+
         while (iterator.hasNext()){
-        	WerknemerNode elem = iterator.next();
+          WerknemerNode elem = iterator.next();
           System.out.println(elem.getWerknemer().toString()
         		            + String.format("%1$-5s", iterator.level())
-        		            + tree.DescendantSum(elem,(ToLongFunction<NameNode>) node -> node.getWerknemer().getSalaris()));
+        		            + tree.DescendantSum(elem,
+        		            		(ToDoubleFunction<WerknemerNode>) node -> node.getWerknemer().getSalaris())
+        		            );
 
         }
-        
     }
 
 }

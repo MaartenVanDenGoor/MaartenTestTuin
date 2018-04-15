@@ -13,9 +13,9 @@ import java.util.function.ToLongFunction;
 public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 	private List<E> nodeList = new ArrayList<>();
 	
-    NodeTree(){
+    public NodeTree(){
     }
-	NodeTree(Collection<E> nodes) {
+	public NodeTree(Collection<E> nodes) {
 		nodeList.addAll(nodes);
 	}
 	@Override
