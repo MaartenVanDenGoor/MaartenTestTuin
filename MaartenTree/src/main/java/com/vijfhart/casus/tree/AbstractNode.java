@@ -75,6 +75,9 @@ public abstract class AbstractNode< E extends AbstractNode<E>> implements Node<E
 	}
 	private boolean isDescendant(E other) {
 		// Als een vd (voor)ouders van de meegegeven node de huidge node is dan return true
+		/*
+		 * Recursief oplossen
+		 */
 		E parent = getParent();
 		if (parent==null) {
 			return false;

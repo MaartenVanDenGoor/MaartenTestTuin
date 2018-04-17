@@ -59,7 +59,7 @@ public class TreeApp
           System.out.println(String.format("%1$-30s", elem  )
         		  + String.format("%1$-5s",lijst.descendantCount(elem))
         		  +" "+String.format("%1$-60s",iterator.path("/"))
-        		  + lijst.DescendantSum(elem,(ToLongFunction<NameNode>) node -> node.getName().length())
+        		  + lijst.descendantSum(elem,(ToLongFunction<NameNode>) node -> node.getName().length())
         		  );
         }
 

@@ -67,7 +67,7 @@ public class WerknemerApp
           WerknemerNode elem = iterator.next();
           System.out.println(elem.getWerknemer().toString()
         		            + String.format("%1$-5s", iterator.level())
-        		            + tree.DescendantSum(elem,
+        		            + tree.descendantSum(elem,
         		            		(ToDoubleFunction<WerknemerNode>) node -> node.getWerknemer().getSalaris())
         		            );
 

@@ -159,7 +159,7 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 		return  descendantsOf(node).size()-1; 
 	}
 	@Override
-	public long DescendantSum(E node, ToLongFunction<E> func) {
+	public long descendantSum(E node, ToLongFunction<E> func) {
 		List<E> retList = descendantsOf(node);
 		long retWaarde = 0;
 		for (E elem:retList) {
@@ -170,7 +170,7 @@ public class NodeTree<E extends Node<E>> implements Tree<E>, TreeIterable<E> {
 		return retWaarde;
 	}
 	@Override
-	public double DescendantSum(E node, ToDoubleFunction<E> func) {
+	public double descendantSum(E node, ToDoubleFunction<E> func) {
 		List<E> retList = descendantsOf(node);
 		double retWaarde = 0;
 		for (E elem:retList) {

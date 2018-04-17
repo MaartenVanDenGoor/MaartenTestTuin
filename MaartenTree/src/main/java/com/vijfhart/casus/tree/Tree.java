@@ -28,14 +28,14 @@ public interface Tree<E extends Node<E>> extends TreeIterable<E> {
      * @param node
      * @return Som (long) 
      */
-	long DescendantSum(E node, ToLongFunction<E> func);
+	long descendantSum(E node, ToLongFunction<E> func);
 	/**
      * Bepaal met op te geven lambda expressie welke waardes opgeteld moeten
      *  van alle nodes onder mee te geven node
 	 * @param node
 	 * @return Som (double)
 	 */
-	 double DescendantSum(E node, ToDoubleFunction<E> func);
+	 double descendantSum(E node, ToDoubleFunction<E> func);
 	 /**
      * Bepaal met op te geven lambda expressie van welke waardes het gemiddelde
      *  van alle nodes onder mee te geven node wordt bepaald
