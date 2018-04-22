@@ -1,5 +1,7 @@
 package test;
 
+import java.util.function.Function;
+
 public class Test {
 
 	/**
@@ -17,8 +19,30 @@ public class Test {
        long uitkomst = Math.round(3.5d);
        System.out.println("uitkomst "+uitkomst);
        //
+       
        Test test = new Test();
        test.doeIets(new Integer(1),new Integer(1));
+       int a, b, c = 10;
+       a = 1;
+       a += b = 3;
+       System.out.println("a "+a+" b "+b);
+       a = ++b;
+       System.out.println("a "+a+" b "+b);
+       int y, x=1;
+       y=x++;
+       System.out.println(" x="+x+" y="+y);
+       /*
+       String s = "Dit Is Een String";
+       System.out.println(testFunction(s,a -> a.toUpperCase()));
+       System.out.println(testFunction(s,String::toUpperCase));
+       */ 
+       String ss = "ss";
+       String bb = "ss";
+       switch (ss) {
+       case "aa": System.out.println("1"); break;
+       case "ss":System.out.println("2"); 
+       default: System.out.println("Default");
+       }
 	}
     public void doeIets() {
     	
@@ -28,6 +52,9 @@ public class Test {
     }
     public void doeIets(Integer een) {
     	System.out.println("De een");
+    }
+    public static String testFunction(String s, Function<String, String> f) {
+    	return f.apply(s);
     }
 
 }
