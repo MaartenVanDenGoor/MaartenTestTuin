@@ -2,38 +2,46 @@ package nl.maarten.ocp.m7exceptions;
 
 import java.io.IOException;
 import java.util.stream.*;
+import java.util.function.Consumer;
 
 public class BronApp  {
 	public static void main(String[] args) {
 		
-//        try (Bron a = new Bron("a");Bron b = new Bron("b")) {
-//            Bron[] blijst = {a,b};
-//            Stream.of(blijst)
-//                  .onClose(() -> System.out.println("OnClose"))
-//                  .forEach(Bron::open);            
-//         }
-
+        Consumer<Bron> bronConsumer = b -> openBron(b); 
         try (Bron a = new Bron("a");
         	 Bron b = new Bron("b");
         		Stream<Bron> stream = Stream.of(a,b)) {
-                     stream.onClose(() -> System.out.println("OnClose"))
-        		      .forEach(Bron::open);
+                     stream.onClose(() -> System.out.println("Closing Stream"))
+                     .forEach(bronConsumer);
+          } catch (IOException | RuntimeException e) {
+        	  System.out.println(e);
+          } finally {
+        	  System.out.println("Stream closed");
           }
 	}
+	public static void openBron (Bron b) {
+		try {
+			b.open();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 }
 class Bron implements AutoCloseable {
     private String naam;
     Bron(String naam) {
         this.naam = naam;
     }
-    public void open()// throws IOException
+    public void open() throws IOException
     {
-        System.out.println("Open "+naam);
-    //    throw new IOException();
+        System.out.println("Opening "+naam);
+        throw new IOException();
 
     }
-    public void close(){
-        System.out.println("Close "+naam);
+    public void close() throws IOException{
+        System.out.println("Closing "+naam);
+        throw new IOException();
     }    
 }
 /*
