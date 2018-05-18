@@ -9,8 +9,7 @@ public class Dobbelsteen {
                                 .setRegion(args[0].toUpperCase())
                                 .build();
         ResourceBundle dobbelsteen = ResourceBundle.getBundle("nl.maarten.ocp.m6localization.dobbelsteen",loc);
-        IntStream.rangeClosed(1, 10).map(.
-                 .
+
         for (int i=1;i<=10;i++) {
             int worp =(int)(Math.random()*6+1);
             System.out.println("worp "+dobbelsteen.getString(""+worp));
