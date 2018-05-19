@@ -1,4 +1,5 @@
 package nl.maarten.ocp.m4streams;
+import java.util.List;
 import java.util.stream.*;
 import static java.lang.Math.sqrt;
 
@@ -12,6 +13,7 @@ public class PriemApp {
 	   	          .forEach(System.out::println);
 	   	        		  
 	}
+	public void tonen(List<? extends Number> lijst) { } 
 }
 /*
 Maak een LongStream getallen vanaf 2 (het eerste priemgetal), die steeds met 1 wordt opgehoogd.  
