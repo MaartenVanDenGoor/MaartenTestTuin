@@ -21,7 +21,7 @@ public class TestDB {
 }
  class MyConnectiona {
 	 private final static String url = 
-			 "jdbc:mysql://localhost:3306/javacursus?useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET";
+			 "jdbc:mysql://localhost:3306/javacursus?useSSL=false&useJDBCCompliantTimezoneShift=true&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&serverTimezone=CET";
 	        //protocol:vendor//locatie:poort/database
 	 public static Connection connect() {
 		 try {
