@@ -1,7 +1,10 @@
 package com.vijfhart.casus.tree;
 import java.util.*;
+import static java.util.Spliterator.*;
 import java.util.function.*;
 import java.util.stream.*;
+
+import com.vijfhart.casus.tree.file.TreeNode;
 /**
  * NodeTree is an implementation of {@link Tree}.
  * It uses an anonymous inner class to implement a TreeIterator.
@@ -37,7 +40,73 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
   public void add(T t){
     nodeList.add(t);
   }
+  /**
+   * Adds all of the elements in the specified NodeTree to this NodeTree 
+   * @param tree
+   */
+  public void addAll(NodeTree<T> tree) {
+	  TreeIterator<T> iterator = tree.iterator();
+	    while(iterator.hasNext()){
+	    	nodeList.add(iterator.next());
+	      }	  
+  }
+  /**
+   * Method for creating a Stream from the Node tree
+   * @return a  stream with TreeNode<T>
+   */
+  public Stream<TreeNode<T>> stream() {
+	  TreeIterator<T> iterator = iterator();
 
+	  class TreeNodeImpl implements TreeNode<T> {
+            private T node;
+            public TreeNodeImpl(T node) {
+            	this.node = node;
+            }
+			@Override
+			public T node() {
+				return node;
+			}
+			@Override
+			public String path(String separator) {
+				return node.toString();
+			}
+			@Override
+			public String path(String separator, Function<T, String> f) {
+				return f.apply(node);
+			}
+			@Override
+			public boolean isLeaf() {
+				return iterator.isLeaf();
+			}
+			@Override
+			public int level() {
+				return iterator.level();
+			}
+		  }
+
+		  class IteratorImpl implements Iterator<TreeNode<T>> {
+			private TreeIterator<T> iterator;
+			public IteratorImpl(TreeIterator<T> iterator) {
+				this.iterator = iterator;
+			}
+			  @Override
+			public boolean hasNext() {
+				// TODO Auto-generated method stub
+				return iterator.hasNext();
+			}
+			@Override
+			public TreeNode<T> next() {
+				// TODO Auto-generated method stub
+				return new TreeNodeImpl(iterator.next());
+			}
+		  }
+     Iterator<TreeNode<T>> iteratorImp = new IteratorImpl(iterator);
+	 // Omsmurfen Iterator naar Stream
+	  Stream<TreeNode<T>> targetStream = StreamSupport.stream(
+	          Spliterators.spliteratorUnknownSize(iteratorImp, ORDERED),
+	          false);		    
+	  return targetStream;
+  }  
    /**
    * Generates a list of nodes descending a given node, including the given node itself.
    * It uses the startWith method to generate a sublist of the node itself and its descendants.
@@ -365,4 +434,3 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
      };
   }
 }
-
