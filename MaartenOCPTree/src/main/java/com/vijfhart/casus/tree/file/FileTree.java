@@ -50,7 +50,8 @@ public class FileTree {
 //        	int filenumber = p.toFile().list()==null?0:p.toFile().list().length;
 //        	System.out.printf("|%20s|%20s|%-50s|\n",filenumber ,filesize, p.toString());
 //            }
-       tree.stream().forEach(node -> System.out.println(node.path("s")));
+       tree.stream().filter(node -> !node.isLeaf())
+                    .forEach(node -> System.out.println(node.path("-")));
     }
     /* 
      * Maak in FileTree ook een methode printTree aan. Deze doorloopt de tree met een TreeIterator, en toont van elke PathNode in de tree de volgende informatie: 

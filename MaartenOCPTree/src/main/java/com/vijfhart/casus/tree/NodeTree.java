@@ -68,11 +68,11 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
 			}
 			@Override
 			public String path(String separator) {
-				return node.toString();
+				return node.toString()+separator; 
 			}
 			@Override
 			public String path(String separator, Function<T, String> f) {
-				return f.apply(node);
+				return f.apply(node)+separator;
 			}
 			@Override
 			public boolean isLeaf() {
@@ -103,7 +103,7 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
      Iterator<TreeNode<T>> iteratorImp = new IteratorImpl(iterator);
 	 // Omsmurfen Iterator naar Stream
 	  Stream<TreeNode<T>> targetStream = StreamSupport.stream(
-	          Spliterators.spliteratorUnknownSize(iteratorImp, ORDERED),
+			  Spliterators.spliterator(iteratorImp, nodeList.size(), ORDERED),
 	          false);		    
 	  return targetStream;
   }  
