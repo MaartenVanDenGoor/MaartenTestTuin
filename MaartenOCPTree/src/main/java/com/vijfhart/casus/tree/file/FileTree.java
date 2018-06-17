@@ -50,9 +50,16 @@ public class FileTree {
 //        	int filenumber = p.toFile().list()==null?0:p.toFile().list().length;
 //        	System.out.printf("|%20s|%20s|%-50s|\n",filenumber ,filesize, p.toString());
 //            }
-       tree.stream().filter(node -> !node.isLeaf())
-                    .forEach(node -> System.out.println(node.path("-")));
- //                     .forEach(System.out::println);
- //                   .forEach(node -> System.out.println(node.path("/", n -> n.getName())));
+
+       tree.stream().filter(pathnode -> !pathnode.isLeaf())
+                    .forEach(pathnode -> System.out.println(pathnode.node().getDate()+"=="
+                        +pathnode.node().getSize()+"=="+pathnode.node().getName()+"=="
+                        +pathnode.path("==")));
     }
+    //
+    public NodeTree<PathNode> getTree() {
+    	return tree;
+    }
+
+
 }

@@ -15,12 +15,12 @@ public class Timer<T> {
    }
    public void get(Supplier<T> s) {
 	   start = Instant.now();
-	   s.get();
+	   T t = s.get();
 	   printDuration();
    }
    public void apply(T t, Function<T,String> f) {
 	   start = Instant.now();
-	   f.apply(t);
+	   String s = f.apply(t);
 	   printDuration();
    }
    private void printDuration() {
