@@ -43,7 +43,7 @@ public class OptionalLongSummaryStatistics {
     	min = other.min().getAsLong() < min?other.min().getAsLong():min;
     	}
     	if (other.max().isPresent() ) {
-    	max = other.max().getAsLong() < max?other.min().getAsLong():max;
+    	max = other.max().getAsLong() < max?other.max().getAsLong():max;
     	}
     	if (other.sum().isPresent()) {
     		sum += other.sum;
