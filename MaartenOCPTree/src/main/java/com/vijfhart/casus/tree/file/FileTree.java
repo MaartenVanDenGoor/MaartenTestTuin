@@ -42,7 +42,7 @@ public class FileTree {
 		}
 
     }
-    public void printTree() {
+    public void printTree(FilePrintOption... opties) {
         TreeIterator<PathNode> iterator = tree.iterator();
 //        while(iterator.hasNext()){
 //        	Path p = iterator.next().getObject();
@@ -52,12 +52,7 @@ public class FileTree {
 //            }
        tree.stream().filter(node -> !node.isLeaf())
                     .forEach(node -> System.out.println(node.path("-")));
+ //                     .forEach(System.out::println);
+ //                   .forEach(node -> System.out.println(node.path("/", n -> n.getName())));
     }
-    /* 
-     * Maak in FileTree ook een methode printTree aan. Deze doorloopt de tree met een TreeIterator, en toont van elke PathNode in de tree de volgende informatie: 
-• het aantal bestanden onder de directory 
-• het totale aantal bytes binnen de directory 
-• het pad van het bestand / de directory 
-
-     */
 }
