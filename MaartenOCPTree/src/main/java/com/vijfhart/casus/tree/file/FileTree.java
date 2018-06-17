@@ -50,14 +50,14 @@ public class FileTree {
 //        	int filenumber = p.toFile().list()==null?0:p.toFile().list().length;
 //        	System.out.printf("|%20s|%20s|%-50s|\n",filenumber ,filesize, p.toString());
 //            }
-       tree.stream().filter(node -> !node.isLeaf())
-                    .forEach(node -> System.out.println(node.path("-")));
+       tree.stream().filter(pathnode -> !pathnode.isLeaf())
+                    .forEach(pathnode -> System.out.println(pathnode.node().getDate()+"=="
+                        +pathnode.node().getSize()+"=="+pathnode.node().getName()+"=="
+                        +pathnode.path("==")));
     }
-    /* 
-     * Maak in FileTree ook een methode printTree aan. Deze doorloopt de tree met een TreeIterator, en toont van elke PathNode in de tree de volgende informatie: 
-• het aantal bestanden onder de directory 
-• het totale aantal bytes binnen de directory 
-• het pad van het bestand / de directory 
+    //
+    public NodeTree<PathNode> getTree() {
+    	return tree;
+    }
 
-     */
 }

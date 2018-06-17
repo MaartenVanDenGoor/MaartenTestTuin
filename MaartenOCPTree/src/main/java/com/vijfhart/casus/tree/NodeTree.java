@@ -1,10 +1,14 @@
 package com.vijfhart.casus.tree;
 import java.util.*;
 import static java.util.Spliterator.*;
+
+import java.math.BigInteger;
 import java.util.function.*;
 import java.util.stream.*;
 
 import com.vijfhart.casus.tree.file.TreeNode;
+import com.vijfhart.casus.tree.stat.OptionalLongSummaryStatistics;
+
 /**
  * NodeTree is an implementation of {@link Tree}.
  * It uses an anonymous inner class to implement a TreeIterator.
@@ -19,6 +23,8 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
   
 
   private List<T> nodeList = new ArrayList<>();
+  private List<T> descendantsOf;
+  private T descendantsOfNode;
   /**
    * empty constructor
    */
@@ -68,11 +74,11 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
 			}
 			@Override
 			public String path(String separator) {
-				return node.toString()+separator; 
+				return iterator.path(separator); 
 			}
 			@Override
 			public String path(String separator, Function<T, String> f) {
-				return f.apply(node)+separator;
+				return iterator.path(separator, f); 
 			}
 			@Override
 			public boolean isLeaf() {
@@ -114,14 +120,18 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
    * @return a list of nodes descending and including the given node.
    */
   public List<T> descendantsOf(T node){
-    Tree<T> copy = new NodeTree<>(nodeList);
-    TreeIterator<T> iterator = copy.iterator();
-    iterator.startWith(node);
-    List<T> list = new ArrayList<>();
-    while(iterator.hasNext()){
-      list.add(iterator.next());
-    }
-    return list;
+	 if (descendantsOfNode == null ||
+		!descendantsOfNode.equals(node)) {
+	    Tree<T> copy = new NodeTree<>(nodeList);
+	    TreeIterator<T> iterator = copy.iterator();
+	    iterator.startWith(node);
+	    List<T> list = new ArrayList<>();
+	    while(iterator.hasNext()){
+	      list.add(iterator.next());
+	    }
+	    descendantsOf = list;
+	 }
+    return descendantsOf;
   }
 
 /**
@@ -433,4 +443,17 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
          }
      };
   }
+
+	@Override
+	public OptionalLongSummaryStatistics descendantLongStatistics(T t, Function<T,OptionalLong> f) {
+		List<T> lijst = descendantsOf(t);
+		OptionalLongSummaryStatistics ret =  lijst.parallelStream()
+				                                  .map(node -> f.apply(node) )    // maak er een OptionalLong van
+	 		                                      .collect(OptionalLongSummaryStatistics::new       //Supplier
+				                                         ,OptionalLongSummaryStatistics::accept     //Accumulator
+				                                         ,OptionalLongSummaryStatistics::combine); 
+		
+		
+		return ret;
+	}
 }
