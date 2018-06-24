@@ -14,8 +14,9 @@ import com.vijfhart.casus.tree.WrapperNode;
 public class PathNode extends WrapperNode<PathNode, Path> {
     private String         name; // De naam van het bestand / de directory  
     private OptionalLong   size; // De bestandsgrootte , leeg als het een directory betreft
-    private FileTime      date;  // De datum dat het bestand of de directory voor het laatst is aangepast
-    private int           numberOfFiles; // Aantal betanden
+    private FileTime       date;  // De datum dat het bestand of de directory voor het laatst is aangepast
+    private int            numberOfFiles; // Aantal betanden
+    private String         sizeHr;
 
     public PathNode(Path object) {
 		super(object);
@@ -41,6 +42,21 @@ public class PathNode extends WrapperNode<PathNode, Path> {
 		return date;
 	}
 	public void setOptions(FilePrintOption... opties) {
+		for (FilePrintOption optie:opties) {
+			switch (optie) {
+			case HUMAN_READABLE:
+			     break;
+			case DATE:
+				break;
+			case DIRS_ONLY:
+				break;
+			case LANGUAGE:
+				break;
+			case MAX_DEPTH:
+			    break;
+			}
+			
+		}
 		
 	}
 	public String toString() {

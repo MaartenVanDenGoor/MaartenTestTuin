@@ -24,11 +24,11 @@ public class FileTreeApp {
     	Timer<FileTree> timer = new Timer<>(); 
     	timer.accept(f, t -> t.printTree(optieLijst)); 
     	//
-    	NodeTree<PathNode> tree = f.getTree();
-    	tree.stream()
-    	    .filter(node -> !node.isLeaf())                                                     // Alleen bestanden
-    	    .map(pathnode  -> tree.descendantLongStatistics(pathnode.node(), a -> a.getSize())) // Maak Statistiek object
-    	    .forEach(System.out::println);
+   // 	NodeTree<PathNode> tree = f.getTree();
+   // 	tree.stream()
+   // 	    .filter(node -> !node.isLeaf())                                                     // Alleen bestanden
+   // 	    .map(pathnode  -> tree.descendantLongStatistics(pathnode.node(), a -> a.getSize())) // Maak Statistiek object
+   // 	    .forEach(System.out::println);
  	//
 //    	System.out.println("-------");
 //    	Map<PathNode,OptionalLongSummaryStatistics> map
