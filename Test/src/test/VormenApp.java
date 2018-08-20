@@ -13,7 +13,7 @@ public class VormenApp {
 abstract class Vorm{
 	public abstract double getOmtrek();
 }
-class Cirkel extends Vorm {
+class Cirkel extends Vormpje {
 	private double straal;
 	public Cirkel(double straal) {
 		super();
@@ -27,7 +27,7 @@ class Cirkel extends Vorm {
 	}
 
 }
-class Rechthoek extends Vorm {
+class Rechthoek extends Vormpje {
 	private double breedte;
 	private double hoogte;
 
