@@ -30,11 +30,21 @@ public class FileTree {
     		           .collect(Collectors.toMap(PathNode::getObject,p -> p));
             // Vullen van de tree met de PathNode objecten waarbij in de peek
     		// de parent gevuld wordt
-        	tree = map.entrySet().stream()
+     /* Eigen uitwerking
+    		tree = map.entrySet().stream()
         			             .peek(eset -> eset.getValue().setParent(map.get(eset.getKey().getParent())))
         	                     .collect(NodeTree<PathNode>::new
         	                    		 ,(a, b) -> a.add(b.getValue())
         	                    		 ,(a, b) -> a.addAll(b));
+     */
+            // Doorloop de map en zoek bij elke PathNode de parent node
+            map.forEach((k,v) -> v.setParent(map.get(k.getParent())));
+            
+            // stop de values uit de map in de tree
+            tree =
+            map.values()
+               .stream()
+               .collect(NodeTree::new,NodeTree::add,NodeTree::addAll);  
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -43,6 +53,7 @@ public class FileTree {
 
     }
     public void printTree(FilePrintOption... opties) {
+    	
         TreeIterator<PathNode> iterator = tree.iterator();
 //        while(iterator.hasNext()){
 //        	Path p = iterator.next().getObject();
@@ -58,11 +69,30 @@ public class FileTree {
                     .forEach(pathnode -> System.out.println(pathnode.node().getDate()+"=="
                         +pathnode.node().getSize().getAsLong() +"=="+pathnode.node().getName()+"=="
                         +pathnode.path("==")));
+       /*
+       System.out.println("Printing out the tree ....");
+       System.out.println();
+       TreeIterator<PathNode> iterator = tree.iterator();
+       while(iterator.hasNext()){
+         PathNode node = iterator.next();
+         System.out.println(iterator.descendantCount(node) + "  " + 
+                            iterator.descendantSum(node, n -> size(n.getObject())) + " " + // delegeer naar method die checked exception opvangt 
+                            iterator.path(File.separator, n -> n.getObject().getName())   
+                            );
+       }
+       */
     }
     //
     public NodeTree<PathNode> getTree() {
     	return tree;
     }
+    private long size(Path p){  // method die checked exception opvangt
+        try{
+          return Files.size(p);
+        } catch (IOException ioe){
+           throw new RuntimeException(ioe);
+        }
+      }
     
 
 }

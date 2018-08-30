@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.util.function.*;
 import java.util.stream.*;
 
+import com.vijfhart.casus.tree.file.PathNode;
 import com.vijfhart.casus.tree.file.TreeNode;
 import com.vijfhart.casus.tree.stat.OptionalLongSummaryStatistics;
 
@@ -56,16 +57,13 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
 	    	nodeList.add(iterator.next());
 	      }	  
   }
-  /**
-   * Method for creating a Stream from the Node tree
-   * @return a  stream with TreeNode<T>
-   */
+/*
   public Stream<TreeNode<T>> stream() {
-	  TreeIterator<T> iterator = iterator();
+	  TreeIterator<T> iterator = this.iterator();
 
-	  class TreeNodeImpl implements TreeNode<T> {
-            private T node;
-            public TreeNodeImpl(T node) {
+	  class MyTreeNode  implements TreeNode<T> {
+            private final T node;
+            public MyTreeNode (T node) {
             	this.node = node;
             }
 			@Override
@@ -88,31 +86,100 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
 			public int level() {
 				return iterator.level();
 			}
+			public String toString() { return node.toString(); }
 		  }
 
-		  class IteratorImpl implements Iterator<TreeNode<T>> {
-			private TreeIterator<T> iterator;
-			public IteratorImpl(TreeIterator<T> iterator) {
-				this.iterator = iterator;
-			}
+		  class MyIterator  implements Iterator<TreeNode<T>> {
 			  @Override
 			public boolean hasNext() {
-				// TODO Auto-generated method stub
 				return iterator.hasNext();
 			}
 			@Override
 			public TreeNode<T> next() {
-				// TODO Auto-generated method stub
-				return new TreeNodeImpl(iterator.next());
+				return new MyTreeNode (iterator.next());
+			}
+			public void remove() { 
+				iterator.remove(); 
 			}
 		  }
-     Iterator<TreeNode<T>> iteratorImp = new IteratorImpl(iterator);
+		  
+  //   Iterator<TreeNode<T>> iteratorImp = new IteratorImpl(iterator);
 	 // Omsmurfen Iterator naar Stream
-	  Stream<TreeNode<T>> targetStream = StreamSupport.stream(
-			  Spliterators.spliterator(iteratorImp, nodeList.size(), ORDERED),
-	          false);		    
-	  return targetStream;
-  }  
+	//  Stream<TreeNode<T>> targetStream = StreamSupport.stream(
+		//	  Spliterators.spliterator(iteratorImp, nodeList.size(), ORDERED),
+	      //    false);		    
+	 // return targetStream;
+	  
+	  return StreamSupport.stream(Spliterators.spliterator(new MyIterator(),nodeList.size(),ORDERED|SORTED|SIZED|DISTINCT|NONNULL),false);
+	  
+  } 
+  */
+  
+  // private method streamHelper krijgt TreeIterator<T> mee als parameter, 
+  // en maakt op basis daarvan een Stream<TreeNode<T>> aan 
+  
+  private Stream<TreeNode<T>> streamHelper(TreeIterator<T> iterator){
+  
+     // lokale class MyTreeNode heeft een node (T) en kan bij de TreeIterator
+
+     class MyTreeNode implements TreeNode<T> { 
+       private final T node;
+
+       MyTreeNode(T node){
+         this.node = node;
+       }
+       public T node() { return node; }
+       public String path(String separator) { return iterator.path(separator); }
+       public String path(String separator, Function<T, String> function) { return iterator.path(separator, function); }
+       public boolean isLeaf() { return iterator.isLeaf(); }
+       public int level() { return iterator.level(); }
+       public String toString() { return node.toString(); }
+     }
+
+
+     // lokale class MyIterator is een Iterator<TreeNode<T>> die bij elke next() een TreeNode teruggeeft
+
+     class MyIterator implements Iterator<TreeNode<T>> { 
+       public boolean hasNext(){ return iterator.hasNext(); }
+       public TreeNode<T> next() { return new MyTreeNode(iterator.next()); }
+       public void remove() { iterator.remove(); }
+     } 
+
+     return StreamSupport.stream(Spliterators.spliterator(new MyIterator(),nodeList.size(),ORDERED|SORTED|SIZED|DISTINCT|NONNULL),false);
+  }
+  
+  
+  // public stream() methods hebben een TreeIterator, 
+  // passen daar eventueel wat van aan, 
+  // en maken met streamHelper(...) een stream aan
+  
+  public Stream<TreeNode<T>> stream(){
+     TreeIterator<T> iterator = iterator();
+     return streamHelper(iterator);
+
+  }
+
+  public Stream<TreeNode<T>> stream(T startNode){
+     TreeIterator<T> iterator = iterator();
+     iterator.startWith(startNode);
+     return streamHelper(iterator);
+  }
+  
+  public Stream<TreeNode<T>> stream(T startNode, Comparator<T> comparator){
+     TreeIterator<T> iterator = iterator();
+     iterator.orderSiblingsBy(comparator);
+     iterator.startWith(startNode);
+     return streamHelper(iterator);
+  }
+  
+  public Stream<TreeNode<T>> stream(Comparator<T> comparator){
+     TreeIterator<T> iterator = iterator();
+     iterator.orderSiblingsBy(comparator);
+     return streamHelper(iterator);
+  }
+
+
+
    /**
    * Generates a list of nodes descending a given node, including the given node itself.
    * It uses the startWith method to generate a sublist of the node itself and its descendants.
@@ -441,6 +508,7 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
            }
            return sb.deleteCharAt(0).toString();
          }
+
      };
   }
 

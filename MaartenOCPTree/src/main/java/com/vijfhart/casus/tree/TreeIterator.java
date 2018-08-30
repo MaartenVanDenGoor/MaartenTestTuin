@@ -1,6 +1,8 @@
 package com.vijfhart.casus.tree;
 import java.util.*;
 import java.util.function.*;
+
+import com.vijfhart.casus.tree.file.PathNode;
 /**
  * An interface to iterate over Nodes in a Tree.
  * This interface provides information about the level in the hierarchy, 
@@ -57,5 +59,6 @@ String path(String separator, Function<T,String> f);
   * @return true if the node is a leaf node.
   */  
    boolean isLeaf();
+
 
 }

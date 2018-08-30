@@ -20,10 +20,10 @@ public class PathNode extends WrapperNode<PathNode, Path> {
 
     public PathNode(Path object) {
 		super(object);
-		fillFields(object);
+		fillFields(object.normalize());
 	}
 	public PathNode(Path object, PathNode parent ) {
-		super (object,parent);
+		super (object.normalize(),parent);
 		fillFields(object);
 	}    
 	public String getName() {
