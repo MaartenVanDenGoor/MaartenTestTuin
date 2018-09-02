@@ -2,7 +2,8 @@ package com.vijfhart.casus.tree;
 import java.util.*;
 import java.util.function.*;
 
-import com.vijfhart.casus.tree.stat.OptionalLongSummaryStatistics;
+import com.vijfhart.casus.tree.stat.*;
+
 
 /**
  * A Tree-structured collection containing Node elements.
@@ -24,7 +25,10 @@ public interface Tree<T extends Node<T>> extends TreeIterable<T> {
   double descendantMin(T t, ToDoubleFunction<T> f);
   long descendantMax(T t, ToLongFunction<T> f);
   double descendantMax(T t, ToDoubleFunction<T> f);
+  //
   OptionalLongSummaryStatistics descendantLongStatistics(T t, Function<T,OptionalLong> f);
+  OptionalDoubleSummaryStatistics descendantDoubleStatistics(T t, Function<T,OptionalDouble> function);
+  <R extends Comparable<R>> OptionalComparableSummaryStatistics<R> descendantComparableStatistics(T t, Function<T,Optional<R>> function);
   
   /**
    * The count of elements beneath the given node.

@@ -1,7 +1,7 @@
 package com.vijfhart.casus.tree.file;
 
 public enum FilePrintOption {
-	HUMAN_READABLE, DATE, DIRS_ONLY, 
+	HUMAN_READABLE, DATE, DIRS_ONLY, FILES_ONLY,
 	LANGUAGE{
 		@Override
 		public String toString() {
@@ -12,7 +12,14 @@ public enum FilePrintOption {
 		@Override
 		public String toString() {
 		return super.toString()+" : "+intValue;
-	}	
+	    }	
+		
+	}
+	,MIN_DEPTH {		
+		@Override
+		public String toString() {
+		return super.toString()+" : "+intValue;
+	    }	
 		
 	};
 	//
@@ -35,14 +42,18 @@ public enum FilePrintOption {
     	if (value.equals("-h")) return HUMAN_READABLE;
     	if (value.equals("-d")) return DIRS_ONLY;
     	if (value.equals("-t")) return DATE;
-    	if (value.substring(0,2).equals("-l")) {
+    	if (value.startsWith("-lang:")) {
         	FilePrintOption.stringValue = value.substring(value.lastIndexOf(":")+1);
     		return LANGUAGE;		
     	}
-    	if (value.substring(0,2).equals("-m")) {
+    	if (value.startsWith("-maxDepth:")) {
         	FilePrintOption.intValue = Integer.parseInt(value.substring(value.lastIndexOf(":")+1));
     		return MAX_DEPTH;		
     	}    	
+    	if (value.startsWith("-minDepth:")) {
+        	FilePrintOption.intValue = Integer.parseInt(value.substring(value.lastIndexOf(":")+1));
+    		return MIN_DEPTH;		
+    	}      	
         return null;
     }
 

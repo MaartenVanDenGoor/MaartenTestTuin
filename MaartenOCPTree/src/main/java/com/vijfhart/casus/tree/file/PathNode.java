@@ -14,17 +14,17 @@ import com.vijfhart.casus.tree.WrapperNode;
 public class PathNode extends WrapperNode<PathNode, Path> {
     private String         name; // De naam van het bestand / de directory  
     private OptionalLong   size; // De bestandsgrootte , leeg als het een directory betreft
-    private FileTime       date;  // De datum dat het bestand of de directory voor het laatst is aangepast
+    private FileTime       lastModified, lastAccessed, created;  
     private int            numberOfFiles; // Aantal betanden
     private String         sizeHr;
 
     public PathNode(Path object) {
 		super(object);
-		fillFields(object.normalize());
+		setCache();
 	}
 	public PathNode(Path object, PathNode parent ) {
 		super (object.normalize(),parent);
-		fillFields(object);
+		setCache();
 	}    
 	public String getName() {
 		return name;
@@ -38,9 +38,7 @@ public class PathNode extends WrapperNode<PathNode, Path> {
 	public void setSize(OptionalLong size) {
 		this.size = size;
 	}
-	public FileTime getDate() {
-		return date;
-	}
+
 	public void setOptions(FilePrintOption... opties) {
 		for (FilePrintOption optie:opties) {
 			switch (optie) {
@@ -62,20 +60,34 @@ public class PathNode extends WrapperNode<PathNode, Path> {
 	public String toString() {
 		return "PN-"+super.toString();
 	}
-	public void setDate(FileTime date) {
-		this.date = date;
-	}
-	private void fillFields(Path object) {
-		name = object.getFileName().toString();
+
+	private void setCache(	) {
+		final Path path = this.getObject();
 		try {
-			BasicFileAttributes attr = Files.readAttributes(object, BasicFileAttributes.class);
-			size = OptionalLong.of(attr.size());
-			date = attr.lastModifiedTime();
+			BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
+		    lastModified = attr.lastModifiedTime();
+		    lastAccessed = attr.lastAccessTime();
+		    created = attr.creationTime();
+			size = attr.isDirectory()?OptionalLong.empty():OptionalLong.of(attr.size());
+			name = path.getFileName().toString();
+			numberOfFiles = path.toFile().list()==null?0:path.toFile().list().length;
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		numberOfFiles = object.toFile().list()==null?0:object.toFile().list().length;
+
+	}
+	public FileTime getLastModified() {
+		return lastModified;
+	}
+	public FileTime getLastAccessed() {
+		return lastAccessed;
+	}
+	public FileTime getCreated() {
+		return created;
+	}
+	public String getSizeHr() {
+		return sizeHr;
 	}
 	public int getNumberOfFiles() {
 		return numberOfFiles;

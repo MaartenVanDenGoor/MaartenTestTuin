@@ -2,26 +2,27 @@ package com.vijfhart.casus.util;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
+
 
 public class Timer<T> {
-	   private Instant start;
+   private Instant start;
    public void accept(T t, Consumer<T>  c) {
 	   start = Instant.now();
 	   c.accept(t);
 	   printDuration();
    }
-   public void get(Supplier<T> s) {
+   public T get(Supplier<T> s) {
 	   start = Instant.now();
 	   T t = s.get();
 	   printDuration();
+	   return t;	
    }
-   public void apply(T t, Function<T,String> f) {
+   public <R> R apply(T t, Function<T,R> f) {
 	   start = Instant.now();
-	   String s = f.apply(t);
+	   R value = f.apply(t);
 	   printDuration();
+	   return value;
    }
    private void printDuration() {
 	   Instant einde = Instant.now();

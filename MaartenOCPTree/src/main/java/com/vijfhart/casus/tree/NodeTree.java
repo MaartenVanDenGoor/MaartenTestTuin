@@ -8,7 +8,7 @@ import java.util.stream.*;
 
 import com.vijfhart.casus.tree.file.PathNode;
 import com.vijfhart.casus.tree.file.TreeNode;
-import com.vijfhart.casus.tree.stat.OptionalLongSummaryStatistics;
+import com.vijfhart.casus.tree.stat.*;
 
 /**
  * NodeTree is an implementation of {@link Tree}.
@@ -25,7 +25,8 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
 
   private List<T> nodeList = new ArrayList<>();
   private List<T> descendantsOf;
-  private T descendantsOfNode;
+  private T current;
+  private Predicate<T> filter = x -> true;
   /**
    * empty constructor
    */
@@ -38,7 +39,9 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
   public NodeTree(List<T> list){
    nodeList=new ArrayList<>(list);
   }
-
+  public void setFilter(Predicate<T> filter){
+	    this.filter=filter;
+	  }
   /**
    * Adds a node to the tree.
    * NodeTree uses a List for its elements. The add method is delegated to this list.
@@ -185,22 +188,39 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
    * It uses the startWith method to generate a sublist of the node itself and its descendants.
    * @param node: a node
    * @return a list of nodes descending and including the given node.
-   */
-  public List<T> descendantsOf(T node){
-	 if (descendantsOfNode == null ||
-		!descendantsOfNode.equals(node)) {
-	    Tree<T> copy = new NodeTree<>(nodeList);
-	    TreeIterator<T> iterator = copy.iterator();
-	    iterator.startWith(node);
-	    List<T> list = new ArrayList<>();
-	    while(iterator.hasNext()){
-	      list.add(iterator.next());
-	    }
-	    descendantsOf = list;
-	 }
-    return descendantsOf;
-  }
+   */ 
+//  public List<T> descendantsOf(T node){
+//	 if (current == null ||
+//		!current.equals(node)) {
+//	    Tree<T> copy = new NodeTree<>(nodeList);
+//	    TreeIterator<T> iterator = copy.iterator();
+//	    iterator.startWith(node);
+//	    List<T> list = new ArrayList<>();
+//	    while(iterator.hasNext()){
+//	      list.add(iterator.next());
+//	    }
+//	    descendantsOf = list;
+//	 }
+//    return descendantsOf;
+//  } 
 
+  // gebruik cache als node gelijk is aan vorige node waarmee descendantsOf is aangeroepen
+  public List<T> descendantsOf(T node){
+	  if(node==current){
+		  return descendantsOf;
+	  }
+	  else{
+		  current=node;
+		  Tree<T> copy = new NodeTree<>(nodeList);
+		  TreeIterator<T> iterator = copy.iterator();
+		  iterator.startWith(node);
+		  descendantsOf = new ArrayList<>();
+		  while(iterator.hasNext()){
+			  descendantsOf.add(iterator.next());
+		  }
+		  return descendantsOf;
+	  }
+  }
 /**
    * A count of the nodes descending a given node.
    * It uses descendantsOf to get the list of nodes.
@@ -511,7 +531,7 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
 
      };
   }
-
+/*
 	@Override
 	public OptionalLongSummaryStatistics descendantLongStatistics(T t, Function<T,OptionalLong> f) {
 		List<T> lijst = descendantsOf(t);
@@ -524,4 +544,36 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
 		
 		return ret;
 	}
+  */
+  public OptionalLongSummaryStatistics descendantLongStatistics(T t, Function<T,OptionalLong> function) {
+	    return descendantsOf(t).stream()
+	               .parallel()
+	               .filter(e -> filter==null||filter.test(e))
+	               .map(e ->function.apply(e))
+	               .collect(OptionalLongSummaryStatistics::new, 
+	                        OptionalLongSummaryStatistics::accept,  
+	                        OptionalLongSummaryStatistics::combine);
+	  }
+
+
+	  public OptionalDoubleSummaryStatistics descendantDoubleStatistics(T t, Function<T,OptionalDouble> function) {
+	    return descendantsOf(t).stream()
+	               .parallel()
+	               .filter(e -> filter==null||filter.test(e))
+	               .map(e ->function.apply(e))
+	               .collect(OptionalDoubleSummaryStatistics::new, 
+	                        OptionalDoubleSummaryStatistics::add,  
+	                        OptionalDoubleSummaryStatistics::combine);
+	  }
+
+
+	  public <R extends Comparable<R>> OptionalComparableSummaryStatistics<R> descendantComparableStatistics(T t, Function<T,Optional<R>> function){
+	    return descendantsOf(t).stream()
+	               .parallel()
+	               .filter(e -> filter==null||filter.test(e))
+	               .map(e -> function.apply(e))
+	               .collect(OptionalComparableSummaryStatistics::new,
+	                        OptionalComparableSummaryStatistics::add,
+	                        OptionalComparableSummaryStatistics::combine);
+	  }
 }
