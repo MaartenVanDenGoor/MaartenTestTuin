@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
 
-import com.vijfhart.casus.tree.NodeTree;
-import com.vijfhart.casus.tree.Tree;
-import com.vijfhart.casus.tree.TreeIterator;
+import com.vijfhart.casus.tree.*;
 
 public class MemoApp {
 	public static void main(String[] args) {
@@ -31,9 +29,6 @@ public class MemoApp {
 		//
 		Tree<MemoNode> tree = new NodeTree<>(lijst);
 		//
-		tree.stream()
-		//
-		tree.forEach(n->System.out.println(n.toString()));
     	TreeIterator<MemoNode> iterator = tree.iterator();
 
         while (iterator.hasNext()){
@@ -42,7 +37,7 @@ public class MemoApp {
         		            );
 
         }
-		
+
 
 	}
 }

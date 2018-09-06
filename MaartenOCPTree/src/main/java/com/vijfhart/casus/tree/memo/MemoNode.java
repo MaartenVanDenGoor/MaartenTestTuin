@@ -10,5 +10,11 @@ public class MemoNode extends WrapperNode<MemoNode, Memo> {
 	public MemoNode(Memo object, MemoNode parent ) {
 		super (object,parent);
 	} 
+	public String toString() {
+		if (this.getParent() != null) {
+			return "/"+this.getParent().toString();
+		}
+		return "/"+super.toString();
+	}
 	
 }
