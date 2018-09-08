@@ -1,5 +1,6 @@
 package com.vijfhart.casus.tree.file;
 
+import java.util.OptionalLong;
 import java.util.function.Function;
 
 import com.vijfhart.casus.tree.Node;
@@ -15,6 +16,11 @@ public interface TreeNode<T extends Node<T>> {
 	boolean isLeaf(); 
 	 
 	int level(); 
-
+	default long getId() {
+		  return node().getId() ;
+	}
+	default OptionalLong getParentId() {
+		  return node().getParentId();
+	}    
 
 }

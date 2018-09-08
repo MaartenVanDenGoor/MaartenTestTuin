@@ -24,4 +24,13 @@ public interface Node<T extends Node<T>> extends LevelComparable<T>, Comparable<
    * @throws IllegalArgumentException if the given node is a child node of this node.
    */
   void setParent(T t);
+  default long getId() {
+	  return this.hashCode();
+  }
+  default OptionalLong getParentId() {
+	  if (this.getParent()!=null) {
+		  return OptionalLong.of(this.getParent().getId());
+	  }
+	  return OptionalLong.empty();
+  }
 }

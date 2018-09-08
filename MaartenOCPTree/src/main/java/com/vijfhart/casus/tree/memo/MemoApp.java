@@ -29,15 +29,6 @@ public class MemoApp {
 		//
 		Tree<MemoNode> tree = new NodeTree<>(lijst);
 		//
-    	TreeIterator<MemoNode> iterator = tree.iterator();
-
-        while (iterator.hasNext()){
-        	MemoNode elem = iterator.next();
-            System.out.println(elem.toString()
-        		            );
-
-        }
-
-
+		tree.stream().forEach(n->System.out.println(n.path("/")));
 	}
 }
