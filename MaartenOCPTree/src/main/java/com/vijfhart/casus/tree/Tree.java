@@ -1,8 +1,10 @@
 package com.vijfhart.casus.tree;
 import java.util.*;
-import java.util.function.*;
 
+import com.vijfhart.casus.tree.file.TreeNode;
 import com.vijfhart.casus.tree.stat.*;
+import java.util.function.*;
+import java.util.stream.*;
 
 
 /**
@@ -50,4 +52,8 @@ public interface Tree<T extends Node<T>> extends TreeIterable<T> {
    */
 
   List<T> descendantsOf(T node);
+  Stream<TreeNode<T>> stream();
+  Stream<TreeNode<T>> stream(T startNode);
+  Stream<TreeNode<T>> stream(Comparator<T> siblingComparator);
+  Stream<TreeNode<T>> stream(T startNode, Comparator<T> siblingComparator);
 }
