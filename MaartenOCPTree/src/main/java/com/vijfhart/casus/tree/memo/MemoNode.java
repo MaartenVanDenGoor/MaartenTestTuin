@@ -5,7 +5,7 @@ import com.vijfhart.casus.tree.WrapperNode;
 public class MemoNode extends WrapperNode<MemoNode, Memo> {
     private static long teller = 0;
     private long id;
-	protected MemoNode(Memo object) {
+	public MemoNode(Memo object) {
 		super(object);
 		id = teller;
 		teller++;

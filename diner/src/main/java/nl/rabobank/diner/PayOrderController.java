@@ -14,8 +14,8 @@ import nl.rabobank.diner.model.CustomerOrder;
 public class PayOrderController {
 	@Autowired 
 	private CustomerOrderRepository customerOrderRepository;
-	@RequestMapping("/placeorder")	
-    public ResponseEntity<CustomerOrder>  post(@RequestBody  int orderNo) {
+	@RequestMapping("/payorder")	
+    public ResponseEntity<CustomerOrder>  payorder(@RequestBody  int orderNo) {
     	Optional<CustomerOrder> opt = customerOrderRepository.findById(orderNo);
     	CustomerOrder co = null;
     	// If the order is present and not paid then update paidInFull to true

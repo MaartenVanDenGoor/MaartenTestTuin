@@ -20,7 +20,7 @@ public class PlaceOrderController {
 	@Autowired 
 	private CustomerOrderRepository customerOrderRepository;	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<CustomerOrder>  post(@RequestBody List<OrderItem> orderItems, String customer) {
+    public ResponseEntity<CustomerOrder>  placeorder(@RequestBody List<OrderItem> orderItems, String customer) {
 		
 		// Create new Master Record CustomerOrder
 		CustomerOrder customerOrder = new CustomerOrder(customer);
@@ -29,8 +29,9 @@ public class PlaceOrderController {
 		// Add CustomerOrder.Id to each orderItem
 		orderItems.forEach(oi -> oi.setOrderId(co.getId()));
 	    orderItemRepository.saveAll(orderItems);
+
 	    
-	   //   return created Customer
+	   //   return created CustomerOrder
 	    return new ResponseEntity<CustomerOrder>(customerOrder, HttpStatus.OK);
     }
 }

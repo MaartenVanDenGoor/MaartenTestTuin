@@ -31,7 +31,12 @@ public class NodeTree<T extends Node<T>> implements Tree<T>{
    * empty constructor
    */
   public NodeTree(){}
-
+  //
+  public NodeTree<T> combine(NodeTree<T> other){
+	    other.nodeList.stream()
+	         .forEach(x->nodeList.add(x));
+	    return this;
+	  }
   /**
    * This constructor can be used to generate a copy of a NodeTree.
    * @param list: a node list

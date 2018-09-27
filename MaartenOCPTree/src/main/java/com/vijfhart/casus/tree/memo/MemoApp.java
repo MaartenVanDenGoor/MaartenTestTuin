@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.function.ToDoubleFunction;
 
 import com.vijfhart.casus.tree.*;
+import com.vijfhart.casus.tree.dao.MemoNodeDatabaseDAO;
+import com.vijfhart.casus.tree.dao.MemoNodeFileDAO;
+import com.vijfhart.casus.tree.file.TreeNode;
 
 public class MemoApp {
 	public static void main(String[] args) {
@@ -28,7 +31,20 @@ public class MemoApp {
 		lijst.add(mwc);		
 		//
 		Tree<MemoNode> tree = new NodeTree<>(lijst);
+	    //
+		tree.stream().forEach(n->System.out.println(n.getId()+" "+n.path("/")));
 		//
-		tree.stream().forEach(n->System.out.println(n.path("/")));
+
+		System.out.println("Opslaan in bestand en uitlezen");
+		MemoNodeFileDAO dao = new MemoNodeFileDAO();
+		tree.stream().forEach(m -> dao.create(m));
+		dao.findAll().forEach(n->System.out.println(n.path("/")));
+		System.out.println("=========================");
+
+		System.out.println("Opslaan in database en uitlezen");
+		MemoNodeDatabaseDAO daoDb = new MemoNodeDatabaseDAO();
+		tree.stream().forEach(m -> daoDb.create(m));
+		daoDb.findAll().forEach(n->System.out.println(n.path("/")));
+
 	}
 }
